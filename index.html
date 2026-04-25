@@ -1757,7 +1757,10 @@ function go(n) {
   cur = n;
   document.getElementById('s' + cur).classList.add('active');
   updateProg();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(function() {
+  var prog = document.getElementById('prog');
+  if (prog) window.scrollTo({ top: prog.offsetTop - 16, behavior: 'smooth' });
+}, 50);
   if (n === 3 && subjectType === 'question') {
     const reading = document.querySelector('input[name="rt"]:checked');
     if (reading && reading.value.includes('3 Question')) setTimeout(revealQuestions, 50);
