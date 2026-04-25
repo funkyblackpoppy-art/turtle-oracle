@@ -5,6 +5,1219 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Turtle Oracle · Kindred Soul Readings · Star Pawz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --full-moon:     #F5F0E8;
+  --cream-stone:   #E7E3D9;
+  --warm-linen:    #D4CFC8;
+  --stone-gray:    #C8C0BC;
+  --dusty-plum:    #7A4D62;
+  --mauve-pink:    #B88FA3;
+  --rose-petal:    #D4A8BC;
+  --blush:         #EACFDA;
+  --turtle-sage:   #4D8B5E;
+  --constellation: #7EC87E;
+  --moss-light:    #C2E8C2;
+  --charcoal-ink:  #2B2B2E;
+  --ink-mid:       #4A4550;
+  --silver-mist:   #8C7A8A;
+  --lavender-gray: #B0A8B8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--cream-stone);
+  color: var(--charcoal-ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(194,232,194,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 90%, rgba(212,168,188,0.12) 0%, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 2.5rem 1.5rem 1.75rem;
+  background: var(--full-moon);
+  border-bottom: 1px solid var(--stone-gray);
+}
+
+.brand-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--silver-mist);
+  margin-bottom: 0.6rem;
+}
+
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 400;
+  color: var(--dusty-plum);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+
+.hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--ink-mid);
+  margin-bottom: 0.25rem;
+}
+
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--silver-mist);
+  margin-bottom: 1rem;
+}
+
+.divider-star { color: var(--turtle-sage); font-size: 0.9rem; letter-spacing: 0.4em; }
+
+/* FORM WRAPPER */
+.form-wrapper {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3rem;
+  scroll-margin-top: 0.5rem;
+}
+
+/* PROGRESS */
+.progress-bar {
+  display: flex;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--stone-gray);
+  z-index: 0;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  color: var(--silver-mist);
+  transition: all 0.3s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--silver-mist);
+  font-family: 'Jost', sans-serif;
+  white-space: nowrap;
+}
+
+.progress-step.active .progress-dot { background: var(--dusty-plum); border-color: var(--dusty-plum); color: var(--full-moon); box-shadow: 0 0 0 3px rgba(122,77,98,0.15); }
+.progress-step.active .progress-label { color: var(--dusty-plum); font-weight: 500; }
+.progress-step.done .progress-dot { background: var(--turtle-sage); border-color: var(--turtle-sage); color: var(--full-moon); }
+.progress-step.done .progress-label { color: var(--turtle-sage); }
+
+/* STEP PANELS */
+.step-panel { display: none; animation: fadeUp 0.3s ease; }
+.step-panel.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* STEP HEADER */
+.step-header { text-align: center; margin-bottom: 1.75rem; }
+
+.step-number {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--turtle-sage);
+  margin-bottom: 0.4rem;
+}
+
+.step-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 400;
+  color: var(--dusty-plum);
+  letter-spacing: 0.05em;
+}
+
+.step-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--silver-mist);
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
+
+/* READING TABS */
+.reading-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--stone-gray);
+  margin-bottom: 1.25rem;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  padding: 0.65rem 1.4rem 0.8rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.07em;
+  color: var(--silver-mist);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn.active { color: var(--dusty-plum); border-bottom-color: var(--dusty-plum); }
+.tab-btn:hover:not(.active) { color: var(--ink-mid); }
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* READING CARDS */
+.reading-grid { display: flex; flex-direction: column; gap: 0.7rem; }
+
+.reading-card {
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 10px;
+  padding: 1.1rem 1.3rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.reading-card:hover { border-color: var(--mauve-pink); background: var(--blush); }
+.reading-card.selected { border-color: var(--dusty-plum); background: rgba(122,77,98,0.05); box-shadow: 0 0 0 3px rgba(122,77,98,0.1); }
+.reading-card input[type="radio"] { display: none; }
+
+.radio-dot {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--stone-gray);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.reading-card.selected .radio-dot { border-color: var(--dusty-plum); background: var(--dusty-plum); }
+.reading-card.selected .radio-dot::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--full-moon); }
+
+.reading-info { flex: 1; }
+
+.reading-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  color: var(--charcoal-ink);
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.03em;
+}
+
+.reading-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+
+.reading-price {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  color: var(--turtle-sage);
+  white-space: nowrap;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.seasonal-badge {
+  display: inline-block;
+  background: var(--blush);
+  color: var(--dusty-plum);
+  font-size: 0.65rem;
+  font-family: 'Jost', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.55rem;
+  border-radius: 20px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  border: 1px solid var(--rose-petal);
+}
+
+.memorial-note {
+  background: var(--blush);
+  border: 1px solid var(--rose-petal);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  margin-top: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--dusty-plum);
+  display: none;
+}
+.memorial-note.show { display: block; }
+
+/* FORM FIELDS */
+.field-group { margin-bottom: 1.2rem; }
+
+.field-label {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: 0.5rem;
+}
+
+.field-label .req { color: var(--dusty-plum); }
+
+.field-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--silver-mist);
+  margin-top: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  width: 100%;
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  color: var(--charcoal-ink);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+input[type="date"], input[type="time"] { color-scheme: light; }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7A8A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-color: var(--full-moon);
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--dusty-plum);
+  box-shadow: 0 0 0 3px rgba(122,77,98,0.1);
+}
+
+input::placeholder, textarea::placeholder { color: var(--lavender-gray); font-style: italic; }
+textarea { resize: vertical; min-height: 95px; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+@media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+/* SUBJECT BLOCK */
+.subject-block {
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.subject-block-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: 0.07em;
+  color: var(--dusty-plum);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--stone-gray);
+}
+
+/* ADD-ON CARDS — plain divs, no label wrapping, no checkbox double-fire */
+.addon-card {
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 10px;
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.addon-card:hover { border-color: var(--mauve-pink); background: rgba(234,207,218,0.3); }
+.addon-card.selected { border-color: var(--dusty-plum); background: rgba(122,77,98,0.05); box-shadow: 0 0 0 3px rgba(122,77,98,0.1); }
+
+.check-box {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 5px;
+  border: 2px solid var(--stone-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.addon-card.selected .check-box { background: var(--dusty-plum); border-color: var(--dusty-plum); }
+.addon-card.selected .check-box::after { content: '✓'; color: var(--full-moon); font-size: 0.9rem; font-weight: 700; }
+
+.addon-info { flex: 1; }
+
+.addon-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: var(--charcoal-ink);
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.03em;
+}
+
+.addon-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-mid);
+  line-height: 1.4;
+}
+
+.addon-price { font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--turtle-sage); font-weight: 500; }
+
+.addon-included-note {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--silver-mist);
+  margin-bottom: 1.35rem;
+}
+
+.total-display {
+  background: var(--warm-linen);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 10px;
+  padding: 1.1rem 1.35rem;
+  margin-top: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mid); }
+.total-amount { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--turtle-sage); font-weight: 500; }
+
+/* ORDER SUMMARY */
+.order-summary {
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 12px;
+  padding: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(200,192,188,0.5); font-size: 1rem; }
+.summary-row:last-child { border-bottom: none; }
+.summary-row .label { color: var(--silver-mist); }
+.summary-row .value { color: var(--charcoal-ink); text-align: right; }
+.summary-row.total .label { color: var(--ink-mid); font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.summary-row.total .value { color: var(--turtle-sage); font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 500; }
+
+/* AGREEMENT ITEMS — pure div, JS-toggled, no label/checkbox double-fire */
+.agreement-item {
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  user-select: none;
+}
+
+.agreement-item:hover { border-color: var(--mauve-pink); }
+.agreement-item.checked { border-color: var(--turtle-sage); background: rgba(77,139,94,0.04); }
+
+.agree-box {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 5px;
+  border: 2px solid var(--stone-gray);
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.agreement-item.checked .agree-box { background: var(--turtle-sage); border-color: var(--turtle-sage); }
+.agreement-item.checked .agree-box::after { content: '✓'; color: var(--full-moon); font-size: 0.85rem; font-weight: 700; }
+
+.agree-text { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--charcoal-ink); line-height: 1.65; }
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 0.9rem; margin-top: 1.9rem; justify-content: flex-end; }
+
+.btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem 1.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-back { background: transparent; border: 1.5px solid var(--stone-gray); color: var(--silver-mist); }
+.btn-back:hover { border-color: var(--mauve-pink); color: var(--ink-mid); }
+
+.btn-next { background: var(--dusty-plum); color: var(--full-moon); box-shadow: 0 3px 12px rgba(122,77,98,0.25); }
+.btn-next:hover { background: #6A3D52; transform: translateY(-1px); box-shadow: 0 5px 18px rgba(122,77,98,0.35); }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-submit { background: var(--turtle-sage); color: var(--full-moon); padding: 1rem 2.4rem; font-size: 0.9rem; box-shadow: 0 3px 14px rgba(77,139,94,0.3); }
+.btn-submit:hover { background: #3D7A4E; transform: translateY(-2px); box-shadow: 0 6px 22px rgba(77,139,94,0.4); }
+.btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ABOUT */
+.about-section { margin-top: 3rem; border-top: 1px solid var(--stone-gray); padding-top: 2.5rem; }
+
+.about-section blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--charcoal-ink);
+  line-height: 1.9;
+  padding: 1.5rem 1.75rem;
+  background: var(--full-moon);
+  border-left: 3px solid var(--turtle-sage);
+  border-radius: 0 10px 10px 0;
+}
+
+.about-sig { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: var(--silver-mist); text-align: right; margin-top: 1.25rem; line-height: 1.9; }
+
+/* SUCCESS */
+#success-screen { display: none; text-align: center; padding: 2.5rem 1rem; animation: fadeUp 0.5s ease; }
+#success-screen.show { display: block; }
+
+.success-star { font-size: 2.8rem; margin-bottom: 1rem; display: block; color: var(--turtle-sage); }
+.success-title { font-family: 'Cinzel', serif; font-size: 1.7rem; color: var(--dusty-plum); margin-bottom: 0.85rem; }
+.success-body { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--ink-mid); margin-bottom: 1.75rem; line-height: 1.8; }
+
+.success-details {
+  background: var(--full-moon);
+  border: 1.5px solid var(--stone-gray);
+  border-radius: 12px;
+  padding: 1.4rem;
+  font-size: 1.05rem;
+  color: var(--charcoal-ink);
+  line-height: 2.1;
+  margin: 0 auto 1.75rem;
+  max-width: 440px;
+}
+
+/* FOOTER */
+.site-footer { text-align: center; padding: 2rem 1.5rem; border-top: 1px solid var(--stone-gray); margin-top: 1rem; background: var(--warm-linen); }
+.footer-brand { font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.14em; color: var(--silver-mist); line-height: 2.2; }
+.footer-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: var(--silver-mist); margin-top: 0.3rem; }
+.eleven-eleven { font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.28em; color: var(--dusty-plum); margin-top: 0.5rem; }
+
+/* UTIL */
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+
+.error-msg { color: var(--dusty-plum); font-size: 0.95rem; font-family: 'Jost', sans-serif; margin-top: 0.35rem; display: none; font-style: italic; }
+.error-msg.show { display: block; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="brand-eyebrow">Black Poppy Magik & Apothecary · Sacred Chaos</p>
+  <h1 class="hero-title">Turtle Oracle</h1>
+  <p class="hero-subtitle">Kindred Soul Readings · Star Pawz</p>
+  <p class="hero-tagline">Every soul arrives with a map written in the stars. This is where we read it.</p>
+  <div class="divider-star">✦ · ✦ · ✦</div>
+</header>
+
+<main class="form-wrapper" id="form-anchor">
+
+  <nav class="progress-bar" aria-label="Form progress">
+    <div class="progress-step active" id="prog-1"><div class="progress-dot">01</div><span class="progress-label">Reading</span></div>
+    <div class="progress-step" id="prog-2"><div class="progress-dot">02</div><span class="progress-label">You</span></div>
+    <div class="progress-step" id="prog-3"><div class="progress-dot">03</div><span class="progress-label">Subjects</span></div>
+    <div class="progress-step" id="prog-4"><div class="progress-dot">04</div><span class="progress-label">Add-Ons</span></div>
+    <div class="progress-step" id="prog-5"><div class="progress-dot">05</div><span class="progress-label">Confirm</span></div>
+  </nav>
+
+  <!-- STEP 1 -->
+  <section class="step-panel active" id="step-1">
+    <div class="step-header">
+      <p class="step-number">Step 01 · Choose Your Reading</p>
+      <h2 class="step-title">Select Your Reading</h2>
+      <p class="step-note">Each reading is crafted by hand — no templates, no generation.<br>Every reading includes the full natal chart. Every soul receives full, devoted attention.</p>
+    </div>
+
+    <div class="reading-tabs">
+      <button class="tab-btn active" onclick="switchTab('animal', this)">Animal</button>
+      <button class="tab-btn" onclick="switchTab('human', this)">Human</button>
+      <button class="tab-btn" onclick="switchTab('stars', this)">Ask the Stars</button>
+    </div>
+
+    <div class="tab-pane active" id="tab-animal">
+      <div class="reading-grid">
+        <label class="reading-card" onclick="selectReading(this, 'Solo Animal Chart', 35, 'solo-animal')">
+          <input type="radio" name="reading" value="solo-animal">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Solo Animal Chart</div>
+            <div class="reading-desc">One animal · natal chart included · soul purpose + elemental archetype + full interpretation</div>
+          </div>
+          <div class="reading-price">$35</div>
+        </label>
+        <label class="reading-card" onclick="selectReading(this, 'Kindred Bond', 55, 'kindred-animal')">
+          <input type="radio" name="reading" value="kindred-animal">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Kindred Bond</div>
+            <div class="reading-desc">One animal + one human · both natal charts included · the soul contract between you</div>
+          </div>
+          <div class="reading-price">$55</div>
+        </label>
+        <label class="reading-card" onclick="selectReading(this, 'Memorial Reading', 45, 'memorial')">
+          <input type="radio" name="reading" value="memorial">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Memorial Reading</div>
+            <div class="reading-desc">A soul who has crossed the threshold · natal chart included · held with full tenderness</div>
+          </div>
+          <div class="reading-price">$45</div>
+        </label>
+        <!-- FIX: apostrophe in "Mother's" escaped as HTML entity so it cannot break the JS string -->
+        <label class="reading-card" onclick="selectReading(this, 'Mother&#39;s Bond', 45, 'mothers-bond')">
+          <input type="radio" name="reading" value="mothers-bond">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Mother's Bond <span class="seasonal-badge">Seasonal</span></div>
+            <div class="reading-desc">Mother + offspring · both natal charts included · the lineage of love</div>
+          </div>
+          <div class="reading-price">$45</div>
+        </label>
+        <label class="reading-card" onclick="selectReading(this, 'Family Constellation', 75, 'family-constellation')">
+          <input type="radio" name="reading" value="family-constellation">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Family Constellation</div>
+            <div class="reading-desc">Multiple souls · individual natal charts included · how they balance and shape each other</div>
+          </div>
+          <div class="reading-price">$75</div>
+        </label>
+        <label class="reading-card" onclick="selectReading(this, 'Breeder Package', 95, 'breeder')">
+          <input type="radio" name="reading" value="breeder">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Breeder Package</div>
+            <div class="reading-desc">Sire + Dam + full litter · all natal charts included · lineage reading + placement notes</div>
+          </div>
+          <div class="reading-price">$95+</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="tab-human">
+      <div class="reading-grid">
+        <label class="reading-card" onclick="selectReading(this, 'Solo Human Chart', 35, 'solo-human')">
+          <input type="radio" name="reading" value="solo-human">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Solo Human Chart</div>
+            <div class="reading-desc">Your natal chart · soul purpose, gifts, and the tensions you came here to work with</div>
+          </div>
+          <div class="reading-price">$35</div>
+        </label>
+        <label class="reading-card" onclick="selectReading(this, 'Kindred Bond', 55, 'kindred-human')">
+          <input type="radio" name="reading" value="kindred-human">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Kindred Bond</div>
+            <div class="reading-desc">Your chart + your animal's chart · both included · why you found each other</div>
+          </div>
+          <div class="reading-price">$55</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="tab-stars">
+      <div class="reading-grid">
+        <label class="reading-card" onclick="selectReading(this, 'Ask the Stars — 1 Question', 15, 'stars-1')">
+          <input type="radio" name="reading" value="stars-1">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Ask the Stars · 1 Question</div>
+            <div class="reading-desc">Your question answered through today's transits mapped to your natal chart</div>
+          </div>
+          <div class="reading-price">$15</div>
+        </label>
+        <label class="reading-card" onclick="selectReading(this, 'Ask the Stars — 3 Questions', 35, 'stars-3')">
+          <input type="radio" name="reading" value="stars-3">
+          <div class="radio-dot"></div>
+          <div class="reading-info">
+            <div class="reading-name">Ask the Stars · 3 Questions</div>
+            <div class="reading-desc">Three questions · one reading · all threads read together</div>
+          </div>
+          <div class="reading-price">$35</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="memorial-note" id="memorial-note">
+      We hold space for every soul who has crossed the threshold. Their chart carries the same sacred weight. We are honored to read it with you. 🖤
+    </div>
+
+    <div id="step1-err" class="error-msg">Please select a reading to continue.</div>
+    <div class="btn-row"><button class="btn btn-next" onclick="goStep(2)">Continue →</button></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step-panel" id="step-2">
+    <div class="step-header">
+      <p class="step-number">Step 02 · Your Information</p>
+      <h2 class="step-title">About You</h2>
+      <p class="step-note">Your reading is delivered by email. All information is kept private and used only to complete your reading.</p>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="fname">First Name <span class="req">*</span></label>
+        <input type="text" id="fname" placeholder="First name" autocomplete="given-name">
+        <div class="error-msg" id="fname-err">First name is required.</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="lname">Last Name</label>
+        <input type="text" id="lname" placeholder="Last name" autocomplete="family-name">
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="email">Email Address <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="your@email.com" autocomplete="email">
+      <p class="field-note">Your reading is delivered here — please double-check this carefully.</p>
+      <div class="error-msg" id="email-err">A valid email address is required.</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="referral">How Did You Find Us?</label>
+      <select id="referral">
+        <option value="">Select one</option>
+        <option>Etsy</option>
+        <option>Instagram</option>
+        <option>TikTok</option>
+        <option>Facebook</option>
+        <option>Word of mouth</option>
+        <option>Black Poppy Apothecary</option>
+        <option>Black Poppy Continuum Substack</option>
+        <option>Cursey Queen</option>
+        <option>Returning customer</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-next" onclick="goStep(3)">Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step-panel" id="step-3">
+    <div class="step-header">
+      <p class="step-number">Step 03 · The Chart</p>
+      <h2 class="step-title">Subject Information</h2>
+      <p class="step-note">The more you share, the deeper the reading. Approximate birth time is always fine — even morning or evening helps.</p>
+    </div>
+    <div id="subjects-container"></div>
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-next" onclick="goStep(4)">Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step-panel" id="step-4">
+    <div class="step-header">
+      <p class="step-number">Step 04 · Enhancements</p>
+      <h2 class="step-title">Optional Add-Ons</h2>
+      <p class="step-note">Your reading is complete as it stands. These are simply options if you'd like to go a little deeper.</p>
+    </div>
+    <p class="addon-included-note mt-2">✦ Your natal chart is already included with every reading, at no extra charge. ✦</p>
+
+    <div class="addon-card" id="addon-audio-card" onclick="toggleAddon('audio', 25)">
+      <div class="check-box" id="check-audio"></div>
+      <div class="addon-info">
+        <div class="addon-name">Audio Recording</div>
+        <div class="addon-desc">Rachael reads your chart aloud — personal, recorded delivery in her own voice</div>
+      </div>
+      <div class="addon-price">+$25</div>
+    </div>
+
+    <div class="addon-card" id="addon-print-card" onclick="toggleAddon('print', 18)">
+      <div class="check-box" id="check-print"></div>
+      <div class="addon-info">
+        <div class="addon-name">8×11 Full Color Natal Chart Print</div>
+        <div class="addon-desc">A professionally printed, full-color natal chart mailed to you — a keepsake worth framing</div>
+      </div>
+      <div class="addon-price">+$18</div>
+    </div>
+
+    <div class="total-display">
+      <span class="total-label">Estimated Total</span>
+      <span class="total-amount" id="total-display">$0</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-next" onclick="goStep(5)">Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step-panel" id="step-5">
+    <div class="step-header">
+      <p class="step-number">Step 05 · Sacred Agreement</p>
+      <h2 class="step-title">Confirm Your Order</h2>
+      <p class="step-note">Review your selections and accept the agreement below before we begin.</p>
+    </div>
+    <div class="order-summary" id="order-summary"></div>
+
+    <!-- FIX: plain divs, not label elements — JS handles toggle, no checkbox double-fire -->
+    <div class="agreement-item" id="agree-item-1" onclick="toggleAgree(1)">
+      <div class="agree-box" id="agree-box-1"></div>
+      <span class="agree-text">I understand this reading is offered for <strong>spiritual and entertainment purposes</strong> and does not constitute veterinary, medical, or professional advice.</span>
+    </div>
+    <div class="agreement-item" id="agree-item-2" onclick="toggleAgree(2)">
+      <div class="agree-box" id="agree-box-2"></div>
+      <span class="agree-text">I consent to my information being stored securely to <strong>generate and deliver this reading</strong>.</span>
+    </div>
+    <div class="agreement-item" id="agree-item-3" onclick="toggleAgree(3)">
+      <div class="agree-box" id="agree-box-3"></div>
+      <span class="agree-text">I agree to receive an <strong>order confirmation and my completed reading by email</strong>. No marketing without further consent.</span>
+    </div>
+
+    <div id="agree-err" class="error-msg">Please accept all three agreements to submit your order.</div>
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(4)">← Back</button>
+      <button class="btn btn-submit" id="submit-btn" onclick="submitOrder()">Submit Order</button>
+    </div>
+  </section>
+
+  <!-- SUCCESS -->
+  <div id="success-screen">
+    <span class="success-star">✦</span>
+    <h2 class="success-title">Your Order is Received</h2>
+    <p class="success-body">Thank you for trusting the Turtle Oracle with this reading.<br>A confirmation is on its way to your email. We will be in touch within 24 hours.</p>
+    <div class="success-details">
+      <strong>Delivery:</strong> 3–5 business days<br>
+      <strong>Contact:</strong> Check your email for confirmation<br>
+      <strong>Questions:</strong> Reply to your confirmation email<br>
+      <strong>Find us:</strong> @funkyblackpoppy
+    </div>
+    <div class="divider-star">✦ · ✦ · ✦</div>
+    <p class="footer-tagline" style="margin-top:0.85rem;">Turtle Oracle · Kindred Soul Readings · Star Pawz<br>Black Poppy Magik & Apothecary · Sacred Chaos<br>By Rachael Nike</p>
+    <div class="eleven-eleven" style="margin-top:0.5rem;">11:11</div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about-section" id="about-section">
+    <div class="step-header" style="margin-bottom:1.25rem;">
+      <p class="step-number">About This Work</p>
+      <h2 class="step-title" style="font-size:1.5rem;">The Turtle Oracle</h2>
+    </div>
+    <blockquote>
+      <p>This space is for the quirks, the love languages, and the 2:00 AM questions.</p><br>
+      <p>Every chart is cast from actual planetary data — positions, elements, moon phase at birth — and interpreted through an ancestral framework I created to honor the bond between animals and their humans. Every chart is as unique as the soul it's cast for.</p><br>
+      <p>The more you share in this form, the deeper your reading goes. There are no wrong answers. If a question doesn't apply, skip it. If a question cracks you open — let it.</p><br>
+      <p>The Turtle Oracle was born one week after I lost my 230-pound black brindle English Mastiff, Turtle — my MS service animal, my anchor, the steadiest soul I have ever known. He stayed for nearly 12 years. He outlived his breed by four of them. Through losing Trent, my Tervuren. Through losing my mother Misha. Through every dark night that needed holding.</p><br>
+      <p>In the raw middle of that grief, this work arrived — the need to understand not just who he was, but why he chose me. What the stars were doing the day he came. What every lean of that massive body against my legs actually meant.</p><br>
+      <p>Turtle gave me this work. Trent watches over it. Alice Moon carries it forward.</p><br>
+      <p>Every reading I write honors them.</p>
+    </blockquote>
+    <div class="about-sig">
+      With deep roots and open blooms,<br>
+      <strong>Rachael Nike</strong><br>
+      Ancestral witch · Herbalist · Reader<br>
+      Black Poppy Magik & Apothecary
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p class="footer-brand">Turtle Oracle · Kindred Soul Readings · Star Pawz<br>Black Poppy Magik & Apothecary · Sacred Chaos<br>By Rachael Nike · @funkyblackpoppy</p>
+  <p class="footer-tagline">Noli illegitimi carborundum</p>
+  <p class="eleven-eleven">11:11</p>
+</footer>
+
+<script>
+const state = {
+  step: 1,
+  reading: null,
+  readingName: '',
+  readingPrice: 0,
+  addons: { audio: false, print: false },
+  addonPrices: { audio: 25, print: 18 },
+  agreements: { 1: false, 2: false, 3: false }
+};
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7oSHV8iWYWQpPX74SglZl-tqMrjri-Vm9nXqbJqfeOJt1sB9Ut5Y-63pkSuwnkMU3Dg/exec';
+
+function scrollToForm() {
+  const anchor = document.getElementById('form-anchor');
+  const y = anchor.getBoundingClientRect().top + window.scrollY - 16;
+  window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+}
+
+function goStep(n) {
+  if (n > state.step && !validateStep(state.step)) return;
+  document.getElementById('step-' + state.step).classList.remove('active');
+  document.getElementById('step-' + n).classList.add('active');
+  for (let i = 1; i <= 5; i++) {
+    const p = document.getElementById('prog-' + i);
+    p.classList.remove('active', 'done');
+    if (i < n) p.classList.add('done');
+    if (i === n) p.classList.add('active');
+  }
+  state.step = n;
+  if (n === 3) buildSubjects();
+  if (n === 5) buildSummary();
+  scrollToForm();
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function selectReading(card, name, price, type) {
+  document.querySelectorAll('.reading-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  state.reading = type;
+  state.readingName = name;
+  state.readingPrice = price;
+  document.getElementById('memorial-note').classList.toggle('show', type === 'memorial');
+  document.getElementById('step1-err').classList.remove('show');
+  updateTotal();
+}
+
+// FIX: pure div-based toggles, no label/checkbox interaction
+function toggleAddon(key) {
+  state.addons[key] = !state.addons[key];
+  document.getElementById('addon-' + key + '-card').classList.toggle('selected', state.addons[key]);
+  updateTotal();
+}
+
+function updateTotal() {
+  let t = state.readingPrice || 0;
+  if (state.addons.audio) t += state.addonPrices.audio;
+  if (state.addons.print) t += state.addonPrices.print;
+  const el = document.getElementById('total-display');
+  if (el) el.textContent = '$' + t;
+}
+
+// FIX: agreements tracked purely in JS state object, no hidden checkbox involved
+function toggleAgree(num) {
+  state.agreements[num] = !state.agreements[num];
+  document.getElementById('agree-item-' + num).classList.toggle('checked', state.agreements[num]);
+  document.getElementById('agree-err').classList.remove('show');
+}
+
+function validateStep(n) {
+  if (n === 1) {
+    if (!state.reading) { document.getElementById('step1-err').classList.add('show'); return false; }
+  }
+  if (n === 2) {
+    let ok = true;
+    const fname = document.getElementById('fname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    if (!fname) { document.getElementById('fname-err').classList.add('show'); ok = false; }
+    else document.getElementById('fname-err').classList.remove('show');
+    if (!email || !email.includes('@')) { document.getElementById('email-err').classList.add('show'); ok = false; }
+    else document.getElementById('email-err').classList.remove('show');
+    return ok;
+  }
+  return true;
+}
+
+function buildSubjects() {
+  const c = document.getElementById('subjects-container');
+  c.innerHTML = '';
+  const type = state.reading;
+  if (!type) return;
+  const map = {
+    'solo-animal':          () => { c.appendChild(animalBlock('Your Animal', 'animal1')); },
+    'solo-human':           () => { c.appendChild(humanBlock('You', 'human1')); },
+    'kindred-animal':       () => { c.appendChild(animalBlock('Your Animal', 'animal1')); c.appendChild(humanBlock('You', 'human1')); },
+    'kindred-human':        () => { c.appendChild(animalBlock('Your Animal', 'animal1')); c.appendChild(humanBlock('You', 'human1')); },
+    'memorial':             () => { c.appendChild(memorialBlock('The Soul We Honor', 'memorial1')); },
+    'mothers-bond':         () => { c.appendChild(animalBlock('The Mother', 'animal1')); c.appendChild(animalBlock('The Offspring', 'animal2')); },
+    'family-constellation': () => { c.appendChild(animalBlock('Animal One', 'animal1')); c.appendChild(animalBlock('Animal Two', 'animal2')); c.appendChild(humanBlock('Human (Optional)', 'human1', false)); },
+    'breeder':              () => { c.appendChild(animalBlock('Sire', 'animal1')); c.appendChild(animalBlock('Dam', 'animal2')); c.appendChild(litterBlock()); },
+    'stars-1':              () => { c.appendChild(starsBlock(1)); },
+    'stars-3':              () => { c.appendChild(starsBlock(3)); }
+  };
+  if (map[type]) map[type]();
+}
+
+function animalBlock(label, id) {
+  const d = document.createElement('div');
+  d.className = 'subject-block';
+  d.innerHTML = `
+    <div class="subject-block-title">✦ ${label}</div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Name <span class="req">*</span></label><input type="text" id="${id}-name" placeholder="Their name"></div>
+      <div class="field-group"><label class="field-label">Species & Breed</label><input type="text" id="${id}-breed" placeholder="e.g. English Mastiff"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Gender / Pronouns</label><input type="text" id="${id}-gender" placeholder="e.g. she/her, he/him, they"></div>
+      <div class="field-group"><label class="field-label">Date of Birth <span class="req">*</span></label><input type="date" id="${id}-dob"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Birth Time</label><input type="time" id="${id}-time"><p class="field-note">Approximate is fine — even morning or evening helps.</p></div>
+      <div class="field-group"><label class="field-label">Birth Location</label><input type="text" id="${id}-location" placeholder="City or region"></div>
+    </div>
+    <div class="field-group"><label class="field-label">Personality Notes</label><textarea id="${id}-personality" placeholder="Quirks, habits, the things that make them unmistakably themselves..."></textarea></div>
+    <div class="field-group"><label class="field-label">Specific Questions</label><textarea id="${id}-questions" placeholder="Anything you want the reading to address..."></textarea></div>`;
+  return d;
+}
+
+function humanBlock(label, id, required = true) {
+  const req = required ? '<span class="req">*</span>' : '';
+  const d = document.createElement('div');
+  d.className = 'subject-block';
+  d.innerHTML = `
+    <div class="subject-block-title">✦ ${label}</div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Name ${req}</label><input type="text" id="${id}-name" placeholder="Your name"></div>
+      <div class="field-group"><label class="field-label">Date of Birth <span class="req">*</span></label><input type="date" id="${id}-dob"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Birth Time</label><input type="time" id="${id}-time"><p class="field-note">Approximate is fine.</p></div>
+      <div class="field-group"><label class="field-label">Birth Location</label><input type="text" id="${id}-location" placeholder="City or region"></div>
+    </div>
+    <div class="field-group"><label class="field-label">About You</label><textarea id="${id}-about" placeholder="Anything you'd like me to know as I read your chart..."></textarea></div>
+    <div class="field-group"><label class="field-label">Specific Questions</label><textarea id="${id}-questions" placeholder="What do you most want to understand?"></textarea></div>`;
+  return d;
+}
+
+function memorialBlock(label, id) {
+  const d = document.createElement('div');
+  d.className = 'subject-block';
+  d.innerHTML = `
+    <div class="subject-block-title">✦ ${label}</div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Name <span class="req">*</span></label><input type="text" id="${id}-name" placeholder="Their name"></div>
+      <div class="field-group"><label class="field-label">Species & Breed</label><input type="text" id="${id}-breed" placeholder="e.g. English Mastiff"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Gender / Pronouns</label><input type="text" id="${id}-gender" placeholder="e.g. she/her, he/him"></div>
+      <div class="field-group"><label class="field-label">Date of Birth <span class="req">*</span></label><input type="date" id="${id}-dob"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Birth Time</label><input type="time" id="${id}-time"></div>
+      <div class="field-group"><label class="field-label">Birth Location</label><input type="text" id="${id}-location" placeholder="City or region"></div>
+    </div>
+    <div class="field-group"><label class="field-label">Personality Notes</label><textarea id="${id}-personality" placeholder="Who were they? What made them unmistakably themselves?"></textarea></div>
+    <div class="field-group">
+      <label class="field-label">Where Are You in Your Grief?</label>
+      <select id="${id}-grief">
+        <option value="">Select one</option>
+        <option>Raw and recent</option>
+        <option>Finding my footing</option>
+        <option>Settled but still tender</option>
+        <option>Ready to celebrate who they were</option>
+        <option>It's complicated</option>
+      </select>
+    </div>
+    <div class="field-group"><label class="field-label">Specific Questions</label><textarea id="${id}-questions" placeholder="Anything you want the reading to address..."></textarea></div>`;
+  return d;
+}
+
+function litterBlock() {
+  const d = document.createElement('div');
+  d.className = 'subject-block';
+  d.innerHTML = `
+    <div class="subject-block-title">✦ The Litter</div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Date of Birth <span class="req">*</span></label><input type="date" id="litter-dob"></div>
+      <div class="field-group"><label class="field-label">Birth Time</label><input type="time" id="litter-time"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Birth Location</label><input type="text" id="litter-location" placeholder="City or region"></div>
+      <div class="field-group"><label class="field-label">Number in Litter</label><input type="text" id="litter-count" placeholder="e.g. 7"></div>
+    </div>
+    <div class="field-group"><label class="field-label">Breed</label><input type="text" id="litter-breed" placeholder="Breed"></div>
+    <div class="field-group"><label class="field-label">Observations</label><textarea id="litter-observations" placeholder="Early behaviors, notable traits, anything you've observed..."></textarea></div>`;
+  return d;
+}
+
+function starsBlock(numQ) {
+  const d = document.createElement('div');
+  d.className = 'subject-block';
+  let qFields = '';
+  for (let i = 1; i <= numQ; i++) {
+    qFields += `<div class="field-group"><label class="field-label">Question ${numQ > 1 ? i : ''} <span class="req">*</span></label><input type="text" id="stars-q${i}" placeholder="Your question..."></div>`;
+  }
+  d.innerHTML = `
+    <div class="subject-block-title">✦ Your Question${numQ > 1 ? 's' : ''}</div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Date of Birth <span class="req">*</span></label><input type="date" id="stars-dob"></div>
+      <div class="field-group"><label class="field-label">Birth Location</label><input type="text" id="stars-location" placeholder="City or region"></div>
+    </div>
+    ${qFields}
+    <div class="field-group"><label class="field-label">Context (Optional)</label><textarea id="stars-context" placeholder="Any background that helps me read your question more accurately..."></textarea></div>`;
+  return d;
+}
+
+function buildSummary() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  let addons = '';
+  if (state.addons.audio) addons += `<div class="summary-row"><span class="label">Audio Recording</span><span class="value">+$25</span></div>`;
+  if (state.addons.print) addons += `<div class="summary-row"><span class="label">8×11 Full Color Print</span><span class="value">+$18</span></div>`;
+  let total = state.readingPrice || 0;
+  if (state.addons.audio) total += 25;
+  if (state.addons.print) total += 18;
+  document.getElementById('order-summary').innerHTML = `
+    <div class="summary-row"><span class="label">Reading</span><span class="value">${state.readingName}</span></div>
+    <div class="summary-row"><span class="label">Base Price</span><span class="value">$${state.readingPrice}</span></div>
+    ${addons}
+    <div class="summary-row"><span class="label">Delivery Email</span><span class="value">${email}</span></div>
+    <div class="summary-row"><span class="label">Name</span><span class="value">${fname} ${lname}</span></div>
+    <div class="summary-row total"><span class="label">Estimated Total</span><span class="value">$${total}</span></div>`;
+}
+
+function submitOrder() {
+  if (!state.agreements[1] || !state.agreements[2] || !state.agreements[3]) {
+    document.getElementById('agree-err').classList.add('show');
+    return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  const payload = {
+    reading: state.readingName, readingType: state.reading,
+    readingPrice: state.readingPrice, addons: JSON.stringify(state.addons),
+    firstName: document.getElementById('fname').value.trim(),
+    lastName: document.getElementById('lname').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    referral: document.getElementById('referral').value,
+    total: state.readingPrice + (state.addons.audio ? 25 : 0) + (state.addons.print ? 18 : 0)
+  };
+  document.querySelectorAll('#subjects-container input, #subjects-container select, #subjects-container textarea').forEach(el => {
+    if (el.id) payload[el.id] = el.value;
+  });
+  fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+  .then(() => {
+    document.getElementById('step-5').classList.remove('active');
+    document.querySelector('.progress-bar').style.display = 'none';
+    document.getElementById('about-section').style.display = 'none';
+    document.getElementById('success-screen').classList.add('show');
+    scrollToForm();
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = 'Submit Order';
+    alert('Something went wrong. Please email blackpoppymagik@gmail.com directly and we will take care of you.');
+  });
+}
+
+updateTotal();
+</script>
+</body>
+</html>
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turtle Oracle · Kindred Soul Readings · Star Pawz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cinzel:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
