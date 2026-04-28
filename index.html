@@ -50,7 +50,7 @@
   --border2:    rgba(47,42,38,0.14);
 
   --shadow:     0 2px 12px rgba(0,0,0,0.04);
-  --shadow2:    0 3px 10px rgba(0,0,0,0.04);
+  --shadow2:    0 6px 24px rgba(0,0,0,0.06);
 
   --playfair:   'Playfair Display', serif;
   --cinzel:     'Cinzel', serif;
@@ -64,51 +64,41 @@
 html { scroll-behavior: auto; }
 
 body {
-  background: var(--void);
+  background: #f3f1ec;
   color: var(--ink);
   font-family: var(--jost);
   font-weight: 300;
-  min-height: auto;
+  min-height: 100vh;
   overflow-x: hidden;
-  overflow-y: auto;
-  height: auto;
 }
 
-/* cosmic star field */
 body::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180,170,150,0.10) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(150,145,135,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(170,160,150,0.04) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180,170,150,0.06) 0%, transparent 70%);
 }
 
-/* green accent top bar */
-body::after {
-  content: '';
+body::after { content: none; }
+
+/* botanical frame fixed overlay */
+.botanical-frame {
   position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(155,143,168,0.18),
-    transparent
-  );
-  z-index: 100;
+  inset: 0;
   pointer-events: none;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
 }
 
 .page {
   position: relative; z-index: 1;
   max-width: 680px;
   margin: 0 auto;
-  padding: 0 20px 80px;
-  overflow: visible 
+  padding: 0 40px 80px;
 }
 
 /* ── HEADER ── */
@@ -270,9 +260,7 @@ body::after {
   animation: up .38s ease both;
 }
 
-.card.active { display: block;
-position:relative:absolute
- }
+.card.active { display: block; }
 
 @keyframes up { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
@@ -1045,6 +1033,128 @@ background: linear-gradient(90deg, var(--purple-mid), var(--sage-hi), var(--purp
 </style>
 </head>
 <body>
+<!-- BOTANICAL FRAME -->
+<svg class="botanical-frame" viewBox="0 0 960 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- border lines -->
+  <rect x="24" y="24" width="912" height="1152" fill="none" stroke="#2f2a26" stroke-width="1" opacity="0.18"/>
+  <rect x="28" y="28" width="904" height="1144" fill="none" stroke="#2f2a26" stroke-width="0.4" opacity="0.1"/>
+
+  <!-- corner ticks -->
+  <line x1="24" y1="24" x2="44" y2="24" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="24" y1="24" x2="24" y2="44" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="936" y1="24" x2="916" y2="24" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="936" y1="24" x2="936" y2="44" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="24" y1="1176" x2="44" y2="1176" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="24" y1="1176" x2="24" y2="1156" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="936" y1="1176" x2="916" y2="1176" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+  <line x1="936" y1="1176" x2="936" y2="1156" stroke="#2f2a26" stroke-width="1" opacity="0.3"/>
+
+  <!-- corner dots -->
+  <circle cx="24" cy="24" r="2" fill="#2f2a26" opacity="0.2"/>
+  <circle cx="936" cy="24" r="2" fill="#2f2a26" opacity="0.2"/>
+  <circle cx="24" cy="1176" r="2" fill="#2f2a26" opacity="0.2"/>
+  <circle cx="936" cy="1176" r="2" fill="#2f2a26" opacity="0.2"/>
+
+  <!-- TOP-LEFT: California Poppy on stem -->
+  <g transform="translate(38, 30)" opacity="0.55">
+    <!-- stem -->
+    <path d="M30 200 Q28 160 32 120 Q30 80 28 50" stroke="#2f2a26" stroke-width="1.2" fill="none"/>
+    <!-- bud on side stem -->
+    <path d="M30 130 Q20 120 18 108" stroke="#2f2a26" stroke-width="0.9" fill="none"/>
+    <ellipse cx="17" cy="105" rx="5" ry="8" fill="none" stroke="#2f2a26" stroke-width="0.9" transform="rotate(-15,17,105)"/>
+    <!-- leaves -->
+    <path d="M30 155 Q12 148 8 138 Q14 142 30 148" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <path d="M30 145 Q46 136 50 126 Q44 132 30 138" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <!-- poppy flower -->
+    <path d="M28 50 Q12 30 20 10 Q28 0 36 10 Q44 30 28 50Z" fill="none" stroke="#2f2a26" stroke-width="1"/>
+    <path d="M28 50 Q8 40 10 20 Q18 10 28 18" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <path d="M28 50 Q48 40 46 20 Q38 10 28 18" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <circle cx="28" cy="28" r="4" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+  </g>
+
+  <!-- TOP-RIGHT: Butterfly -->
+  <g transform="translate(860, 32)" opacity="0.5">
+    <path d="M20 25 Q5 10 0 20 Q5 35 20 30Z" fill="none" stroke="#2f2a26" stroke-width="0.9"/>
+    <path d="M20 25 Q35 10 40 20 Q35 35 20 30Z" fill="none" stroke="#2f2a26" stroke-width="0.9"/>
+    <path d="M20 28 Q8 35 5 48 Q12 44 20 35Z" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <path d="M20 28 Q32 35 35 48 Q28 44 20 35Z" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <!-- body -->
+    <ellipse cx="20" cy="28" rx="2" ry="8" fill="#2f2a26" opacity="0.4"/>
+    <!-- antennae -->
+    <path d="M19 20 Q14 10 12 4" stroke="#2f2a26" stroke-width="0.7" fill="none"/>
+    <path d="M21 20 Q26 10 28 4" stroke="#2f2a26" stroke-width="0.7" fill="none"/>
+    <circle cx="12" cy="4" r="1.5" fill="#2f2a26" opacity="0.5"/>
+    <circle cx="28" cy="4" r="1.5" fill="#2f2a26" opacity="0.5"/>
+    <!-- wing details -->
+    <path d="M10 18 Q15 22 18 28" stroke="#2f2a26" stroke-width="0.4" fill="none" opacity="0.5"/>
+    <path d="M30 18 Q25 22 22 28" stroke="#2f2a26" stroke-width="0.4" fill="none" opacity="0.5"/>
+  </g>
+
+  <!-- LEFT MID: 11:11 with cross tick -->
+  <g transform="translate(24, 570)" opacity="0.45">
+    <line x1="0" y1="12" x2="12" y2="12" stroke="#2f2a26" stroke-width="0.8"/>
+    <line x1="6" y1="6" x2="6" y2="18" stroke="#2f2a26" stroke-width="0.8"/>
+    <text x="16" y="16" font-family="'Cinzel', serif" font-size="11" fill="#2f2a26" letter-spacing="2">11:11</text>
+    <line x1="58" y1="12" x2="70" y2="12" stroke="#2f2a26" stroke-width="0.8"/>
+    <line x1="64" y1="6" x2="64" y2="18" stroke="#2f2a26" stroke-width="0.8"/>
+  </g>
+
+  <!-- RIGHT MID: Paw print in circle medallion -->
+  <g transform="translate(876, 540)" opacity="0.5">
+    <circle cx="28" cy="28" r="26" fill="none" stroke="#2f2a26" stroke-width="1"/>
+    <!-- paw pad -->
+    <ellipse cx="28" cy="32" rx="9" ry="7" fill="#2f2a26" opacity="0.25"/>
+    <!-- toes -->
+    <ellipse cx="16" cy="22" rx="4.5" ry="3.5" fill="#2f2a26" opacity="0.25"/>
+    <ellipse cx="24" cy="18" rx="4" ry="3.5" fill="#2f2a26" opacity="0.25"/>
+    <ellipse cx="32" cy="18" rx="4" ry="3.5" fill="#2f2a26" opacity="0.25"/>
+    <ellipse cx="40" cy="22" rx="4.5" ry="3.5" fill="#2f2a26" opacity="0.25"/>
+    <!-- diamond accents on connector line -->
+    <line x1="-10" y1="28" x2="2" y2="28" stroke="#2f2a26" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="-13" cy="28" r="1.5" fill="#2f2a26" opacity="0.3"/>
+  </g>
+
+  <!-- BOTTOM-LEFT: Turtle -->
+  <g transform="translate(42, 1090)" opacity="0.5">
+    <!-- shell -->
+    <ellipse cx="35" cy="28" rx="22" ry="16" fill="none" stroke="#2f2a26" stroke-width="1.1"/>
+    <!-- shell pattern -->
+    <ellipse cx="35" cy="28" rx="10" ry="8" fill="none" stroke="#2f2a26" stroke-width="0.7"/>
+    <path d="M25 20 Q35 14 45 20" fill="none" stroke="#2f2a26" stroke-width="0.6"/>
+    <path d="M22 28 Q35 22 48 28" fill="none" stroke="#2f2a26" stroke-width="0.6"/>
+    <path d="M25 36 Q35 42 45 36" fill="none" stroke="#2f2a26" stroke-width="0.6"/>
+    <!-- head -->
+    <ellipse cx="57" cy="24" rx="7" ry="5" fill="none" stroke="#2f2a26" stroke-width="1"/>
+    <circle cx="60" cy="22" r="1" fill="#2f2a26" opacity="0.5"/>
+    <!-- legs -->
+    <path d="M22 18 Q12 12 8 8" stroke="#2f2a26" stroke-width="0.9" fill="none"/>
+    <path d="M48 18 Q56 10 60 8" stroke="#2f2a26" stroke-width="0.9" fill="none"/>
+    <path d="M20 36 Q10 44 6 48" stroke="#2f2a26" stroke-width="0.9" fill="none"/>
+    <path d="M50 36 Q58 44 62 48" stroke="#2f2a26" stroke-width="0.9" fill="none"/>
+    <!-- tail -->
+    <path d="M15 28 Q4 28 0 32" stroke="#2f2a26" stroke-width="0.9" fill="none"/>
+  </g>
+
+  <!-- BOTTOM-RIGHT: Poppy with stem + heart -->
+  <g transform="translate(848, 1060)" opacity="0.55">
+    <!-- stem -->
+    <path d="M40 130 Q38 100 42 70 Q40 40 38 16" stroke="#2f2a26" stroke-width="1.2" fill="none"/>
+    <!-- leaf -->
+    <path d="M40 90 Q54 82 58 70 Q50 78 40 82" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <path d="M40 80 Q26 72 22 60 Q30 68 40 72" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <!-- bud branch -->
+    <path d="M40 55 Q52 48 56 38" stroke="#2f2a26" stroke-width="0.8" fill="none"/>
+    <path d="M56 38 Q58 30 54 22 Q60 30 56 38" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <!-- poppy flower -->
+    <path d="M38 16 Q20 -2 28 -18 Q38 -26 46 -18 Q54 -2 38 16Z" fill="none" stroke="#2f2a26" stroke-width="1.1"/>
+    <path d="M38 16 Q16 8 18 -12 Q26 -20 38 -10" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <path d="M38 16 Q60 8 58 -12 Q50 -20 38 -10" fill="none" stroke="#2f2a26" stroke-width="0.8"/>
+    <circle cx="38" cy="0" r="5" fill="none" stroke="#2f2a26" stroke-width="0.9"/>
+    <!-- small heart at base -->
+    <path d="M28 118 Q28 112 34 112 Q38 112 38 116 Q38 112 42 112 Q48 112 48 118 Q48 124 38 130 Q28 124 28 118Z" fill="none" stroke="#2f2a26" stroke-width="0.9"/>
+  </g>
+</svg>
+
 <div class="page">
 
   <!-- HEADER -->
@@ -1609,9 +1719,11 @@ function go(n) {
   document.getElementById('s' + cur).classList.add('active');
   updateProg();
   setTimeout(function() {
-  var prog = document.getElementById('prog');
-  if (prog) window.scrollTo({ top: prog.offsetTop - 16, behavior: 'smooth' });
-}, 50);
+    var prog = document.getElementById('prog');
+    if (!prog) return;
+    var top = prog.getBoundingClientRect().top + window.scrollY - 16;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }, 60);
   if (n === 3 && subjectType === 'question') {
     const reading = document.querySelector('input[name="rt"]:checked');
     if (reading && reading.value.includes('3 Question')) setTimeout(revealQuestions, 50);
