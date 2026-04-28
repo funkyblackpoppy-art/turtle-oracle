@@ -50,7 +50,7 @@
   --border2:    rgba(47,42,38,0.14);
 
   --shadow:     0 2px 12px rgba(0,0,0,0.04);
-  --shadow2:    0 6px 24px rgba(0,0,0,0.06);
+  --shadow2:    0 3px 10px rgba(0,0,0,0.04);
 
   --playfair:   'Playfair Display', serif;
   --cinzel:     'Cinzel', serif;
@@ -61,7 +61,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 
 body {
   background: var(--void);
@@ -70,12 +70,13 @@ body {
   font-weight: 300;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto
 }
 
 /* cosmic star field */
 body::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
@@ -106,6 +107,7 @@ body::after {
   max-width: 680px;
   margin: 0 auto;
   padding: 0 20px 80px;
+  will-change:transform; 
 }
 
 /* ── HEADER ── */
