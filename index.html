@@ -1905,29 +1905,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Sending to webhook:", data);
 
-fetch("PASTE_YOUR_MAKE_WEBHOOK_URL_HERE", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-})
-.then(response => {
-  if (!response.ok) {
-    throw new Error("Bad response from server");
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.getElementById("turtleForm");
+
+  console.log("FORM FOUND:", form);
+
+  if (!form) {
+    console.error("FORM NOT FOUND");
+    return;
   }
-  return response.json(); // 👈 important fix
-})
-.then(result => {
-  console.log("SUCCESS:", result);
-  alert("Reading sent ✨");
-  form.reset();
-})
-.catch(error => {
-  console.error("ERROR:", error);
-  alert("Something broke — check webhook");
-});
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    console.log("Sending to webhook:", data);
+
+    fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      console.log("SUCCESS");
+      alert("Reading sent ✨");
+      form.reset();
+    })
+    .catch(err => {
+      console.error("ERROR:", err);
+      alert("Something went wrong");
+    });
+
   });
+
 });
 </script>
 </body>
