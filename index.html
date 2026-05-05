@@ -1819,7 +1819,15 @@ function collectSubjects() {
     }
     out.push(obj);
   });
-  return out;
+  return out;}
+
+function showSuccess() {
+  document.getElementById('prog').style.display = 'none';
+  document.getElementById('s5').style.display = 'none';
+  document.getElementById('successScr').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 }
 
 async function submitForm() {
@@ -1858,69 +1866,44 @@ async function submitForm() {
   }
 }
 
+<script>
 function showSuccess() {
-  document.getElementById('prog').style.display = 'none';
-  document.getElementById('s5').style.display = 'none';
-  document.getElementById('successScr').classList.add('show');
+  document.getElementById('prog')?.style && (document.getElementById('prog').style.display = 'none');
+  document.getElementById('s5')?.style && (document.getElementById('s5').style.display = 'none');
+  document.getElementById('successScr')?.classList.add('show');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-window.addEventListener("DOMContentLoaded", function() {
-  const form = document.querySelector("form");
 
-  if (!form) {
-    console.error("Form not found");
-    return;
-  }
-
-<form name="turtle-intake" method="POST" id="turtleForm">
-
-  <input type="text" name="name" placeholder="Your Name" required>
-  <input type="text" name="pet_name" placeholder="Pet Name" required>
-  <textarea name="question" placeholder="Your question..." required></textarea>
-
-  <button type="submit">Submit</button>
-
-</form>
-
-<script>
 window.addEventListener("load", function () {
 
-  const form = document.getElementById("turtleForm") || document.forms[0];
+  const form = document.getElementById("turtleForm");
 
   console.log("FORM FOUND:", form);
 
   if (!form) {
-    console.error("FORM STILL NOT FOUND");
+    console.error("FORM NOT FOUND");
     return;
   }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = Object.fromEntries(new FormData(form).entries());
 
-    console.log("Sending to webhook:", data);
+    console.log("Sending:", data);
 
     fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })
     .then(() => {
       console.log("SUCCESS");
-      alert("Reading sent ✨");
+      showSuccess();
       form.reset();
     })
-    .catch(err => {
-      console.error("ERROR:", err);
-    });
-
+    .catch(err => console.error("ERROR:", err));
   });
 
 });
 </script>
-</body>
-</html>
