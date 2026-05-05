@@ -1865,5 +1865,32 @@ function showSuccess() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+  const form = document.querySelector("form");
+
+  if (!form) {
+    console.error("Form not found");
+    return;
+  }
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    await fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    form.submit();
+  });
+});
+</script>  
 </body>
 </html>
