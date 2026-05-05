@@ -1798,7 +1798,14 @@ function checkAgree() {
   const all = document.getElementById('ag1').checked && document.getElementById('ag2').checked && document.getElementById('ag3').checked;
   document.getElementById('submitBtn').disabled = !all;
 }
+<form id="turtleForm">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="text" name="pet_name" placeholder="Pet Name" required>
+  <textarea name="question" placeholder="Your question..." required></textarea>
+  <button type="submit">Submit</button>
+</form>
 
+  
 function collectSubjects() {
   const configs = getSubjectConfig();
   const out = [];
@@ -1821,56 +1828,16 @@ function collectSubjects() {
   });
   return out;}
 
-function showSuccess() {
-  document.getElementById('prog').style.display = 'none';
-  document.getElementById('s5').style.display = 'none';
-  document.getElementById('successScr').classList.add('show');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-}
-
-async function submitForm() {
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>Submitting...';
-  const reading = document.querySelector('input[name="rt"]:checked');
-  const addons  = [...document.querySelectorAll('.ac input:checked')].map(cb => cb.value);
-  let total = basePrice;
-  document.querySelectorAll('.ac input:checked').forEach(cb => total += parseInt(cb.dataset.price));
-  const payload = {
-    timestamp:   new Date().toISOString(),
-    readingType: reading ? reading.value : '',
-    basePrice:   '$' + basePrice,
-    addOns:      addons.join(', ') || 'None',
-    total:       '$' + total,
-    firstName:   document.getElementById('firstName').value.trim(),
-    lastName:    document.getElementById('lastName').value.trim(),
-    email:       document.getElementById('email').value.trim(),
-    referral:    document.getElementById('referral').value || '',
-    subjects:    collectSubjects()
-  };
-  try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    showSuccess();
-  } catch (err) {
-    const errEl = document.getElementById('submitErr');
-    errEl.textContent = 'Something went wrong. Please email us directly at @funkyblackpoppy.';
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.innerHTML = 'Submit Order';
-  }
-}
-
 <script>
 function showSuccess() {
-  document.getElementById('prog')?.style && (document.getElementById('prog').style.display = 'none');
-  document.getElementById('s5')?.style && (document.getElementById('s5').style.display = 'none');
-  document.getElementById('successScr')?.classList.add('show');
+  const prog = document.getElementById('prog');
+  const s5 = document.getElementById('s5');
+  const success = document.getElementById('successScr');
+
+  if (prog) prog.style.display = 'none';
+  if (s5) s5.style.display = 'none';
+  if (success) success.classList.add('show');
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1903,6 +1870,7 @@ window.addEventListener("load", function () {
       form.reset();
     })
     .catch(err => console.error("ERROR:", err));
+
   });
 
 });
