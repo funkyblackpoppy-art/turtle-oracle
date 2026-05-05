@@ -1880,7 +1880,9 @@ window.addEventListener("DOMContentLoaded", function() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    await fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
+    console.log("Sending to webhook:", data);
+
+    await fetch("YOUR_REAL_WEBHOOK_URL_HERE", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1891,6 +1893,6 @@ window.addEventListener("DOMContentLoaded", function() {
     form.submit();
   });
 });
-</script>  
+</script>
 </body>
 </html>
