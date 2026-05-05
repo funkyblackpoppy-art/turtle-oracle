@@ -1805,7 +1805,8 @@ function checkAgree() {
   <button type="submit">Submit</button>
 </form>
 
-  
+<script>
+
 function collectSubjects() {
   const configs = getSubjectConfig();
   const out = [];
@@ -1813,6 +1814,7 @@ function collectSubjects() {
     const id = `sub${idx}`;
     const obj = { label: cfg.label, type: cfg.type };
     const get = key => { const el = document.getElementById(`${id}_${key}`); return el ? el.value.trim() : ''; };
+
     if (cfg.type === 'question') {
       obj.dob = get('dob'); obj.time = get('time'); obj.loc = get('loc');
       obj.q1 = get('q1'); obj.q2 = get('q2'); obj.q3 = get('q3'); obj.ctx = get('ctx');
@@ -1824,11 +1826,12 @@ function collectSubjects() {
       obj.dob = get('dob'); obj.time = get('time'); obj.loc = get('loc');
       obj.status = get('status'); obj.notes = get('notes'); obj.qs = get('qs');
     }
+
     out.push(obj);
   });
-  return out;}
 
-<script>
+  return out;
+}  
 function showSuccess() {
   const prog = document.getElementById('prog');
   const s5 = document.getElementById('s5');
@@ -1875,3 +1878,5 @@ window.addEventListener("load", function () {
 
 });
 </script>
+</body>
+</html>
