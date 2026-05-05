@@ -1878,17 +1878,21 @@ function submitForm() {
   var formData = new FormData();
   formData.append('payload', JSON.stringify(payload));
 
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body:   formData
-  })
-  .then(r => r.text())
-  .then(function(text) {
-    try {
-      var result = JSON.parse(text);
-      if (result.status === 'ok') { showSuccess(); return; }
-      throw new Error(result.message || 'Script error');
-    } catch(e) { showSuccess(); }
+// REPLACE your fetch call with this:
+async function submitForm(data) {
+  const formData = new URLSearchParams(data); // data = plain object
+
+  const response = await fetch("YOUR_GAS_DEPLOY_URL", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formData.toString(),
+  });
+
+  const result = await response.json();
+  return result;
+}
   })
   .catch(function(err) {
     console.error('Submit error:', err);
