@@ -1906,23 +1906,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Sending to webhook:", data);
 
-    fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.text())
-    .then(result => {
-      console.log("SUCCESS:", result);
-      alert("Reading sent ✨");
-      form.reset();
-    })
-    .catch(error => {
-      console.error("ERROR:", error);
-      alert("Something went wrong");
-    });
+fetch("PASTE_YOUR_MAKE_WEBHOOK_URL_HERE", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error("Bad response from server");
+  }
+  return response.json(); // 👈 important fix
+})
+.then(result => {
+  console.log("SUCCESS:", result);
+  alert("Reading sent ✨");
+  form.reset();
+})
+.catch(error => {
+  console.error("ERROR:", error);
+  alert("Something broke — check webhook");
+});
   });
 });
 </script>
