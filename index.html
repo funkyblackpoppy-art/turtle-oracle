@@ -1884,13 +1884,46 @@ window.addEventListener("DOMContentLoaded", function() {
 </form>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("load", function () {
+
   const form = document.getElementById("turtleForm");
+
+  console.log("FORM FOUND:", form);
 
   if (!form) {
     console.error("FORM NOT FOUND");
     return;
   }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    console.log("Sending to webhook:", data);
+
+    fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      console.log("SUCCESS");
+      alert("Reading sent ✨");
+      form.reset();
+    })
+    .catch(err => {
+      console.error("ERROR:", err);
+      alert("Something went wrong");
+    });
+
+  });
+
+});
+</script>
 
   console.log("FORM FOUND:", form);
 
