@@ -1779,26 +1779,43 @@ function buildSummary() {
   const reading = document.querySelector('input[name="rt"]:checked');
   const addons  = [...document.querySelectorAll('.ac input:checked')].map(cb => cb.value);
   let total = basePrice;
-  document.querySelectorAll('.ac input:checked').forEach(cb => total += parseInt(cb.dataset.price));
+
+  document.querySelectorAll('.ac input:checked').forEach(cb => {
+    total += parseInt(cb.dataset.price);
+  });
 
   let html = `<div style="font-family:var(--cinzel);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">Your Order</div>`;
   html += `<div class="sum-row"><span class="sum-key">${reading ? reading.value : ''}</span><span class="sum-val">$${basePrice}</span></div>`;
+
   addons.forEach(a => {
     const el = document.querySelector(`.ac input[value="${a}"]`);
     html += `<div class="sum-row"><span class="sum-key">${a}</span><span class="sum-val">+$${el ? el.dataset.price : 0}</span></div>`;
   });
+
   const sub0name = document.getElementById('sub0_name');
+
   html += `<div class="sum-row"><span class="sum-key">Estimated Total</span><span class="sum-total">$${total}</span></div>`;
-  if (sub0name?.value) html += `<div class="sum-row" style="border-bottom:none;padding-top:4px;"><span class="sum-key">For</span><span class="sum-val">${sub0name.value}</span></div>`;
+
+  if (sub0name?.value) {
+    html += `<div class="sum-row" style="border-bottom:none;padding-top:4px;"><span class="sum-key">For</span><span class="sum-val">${sub0name.value}</span></div>`;
+  }
+
   html += `<div class="sum-row" style="border-bottom:none;padding-top:4px;"><span class="sum-key">Delivered to</span><span class="sum-val">${document.getElementById('email').value}</span></div>`;
+
   document.getElementById('summaryBox').innerHTML = html;
-}
+} // 👈 THIS WAS MISSING
 
 function checkAgree() {
-  const all = document.getElementById('ag1').checked && document.getElementById('ag2').checked && document.getElementById('ag3').checked;
+  const all =
+    document.getElementById('ag1').checked &&
+    document.getElementById('ag2').checked &&
+    document.getElementById('ag3').checked;
+
   document.getElementById('submitBtn').disabled = !all;
 }
-<form id="turtleForm">
+
+  
+  <form id="turtleForm">
   <input type="text" name="name" placeholder="Your Name" required>
   <input type="text" name="pet_name" placeholder="Pet Name" required>
   <textarea name="question" placeholder="Your question..." required></textarea>
