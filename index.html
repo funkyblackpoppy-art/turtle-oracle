@@ -1874,23 +1874,55 @@ window.addEventListener("DOMContentLoaded", function() {
     return;
   }
 
-  form.addEventListener("submit", async function(e) {
+<form name="turtle-intake" method="POST" id="turtleForm">
+
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="text" name="pet_name" placeholder="Pet Name" required>
+  <textarea name="question" placeholder="Your question..." required></textarea>
+
+  <button type="submit">Submit</button>
+
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("turtleForm");
+
+  if (!form) {
+    console.error("FORM NOT FOUND");
+    return;
+  }
+
+  console.log("FORM FOUND:", form);
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = {
+      name: form.name.value,
+      pet_name: form.pet_name.value,
+      question: form.question.value
+    };
 
     console.log("Sending to webhook:", data);
 
-    await fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
+    fetch("https://hook.us2.make.com/nmx9djly06jle5sql5l2p8et6x9cro1d", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log("SUCCESS:", result);
+      alert("Reading sent ✨");
+      form.reset();
+    })
+    .catch(error => {
+      console.error("ERROR:", error);
+      alert("Something went wrong");
     });
-
-    form.submit();
   });
 });
 </script>
