@@ -1946,15 +1946,24 @@ async function submitForm() {
   // Awaiting the fetch ensures the request leaves the browser before
   // showSuccess() changes the DOM and potentially cancels it.
   try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
-    console.log('Turtle Oracle intake sent.');
-  } catch (err) {
-    console.warn('Fetch warning:', err);
+// Change your fetch call to look like this:
+fetch(your_script_url, {
+  method: 'POST',
+  mode: 'no-cors', // <--- This is crucial for Google Apps Script
+  cache: 'no-cache',
+  headers: {
+    'Content-Type': 'text/plain', // <--- Use text/plain to bypass CORS preflight
+  },
+  redirect: 'follow',
+  body: JSON.stringify(formData)
+})
+.then(response => {
+  // Note: with 'no-cors', the response will be "opaque" 
+  // you won't be able to see if it succeeded in the code,
+  // but the data will reach the script.
+  console.log("Data sent to oracle!");
+})
+.catch(error => console.error('Error!', error.message));
   }
 
   showSuccess();
