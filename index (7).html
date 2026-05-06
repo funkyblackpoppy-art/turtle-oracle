@@ -1863,6 +1863,9 @@ function collectSubjects() {
     }
 
     out.push(obj);
+
+
+    
   });
 
   return out;
@@ -1947,25 +1950,31 @@ async function submitForm() {
   // showSuccess() changes the DOM and potentially cancels it.
   try {
 // Change your fetch call to look like this:
-fetch(your_script_url, {
-  method: 'POST',
-  mode: 'no-cors', // <--- This is crucial for Google Apps Script
-  cache: 'no-cache',
-  headers: {
-    'Content-Type': 'text/plain', // <--- Use text/plain to bypass CORS preflight
-  },
-  redirect: 'follow',
-  body: JSON.stringify(formData)
-})
-.then(response => {
-  // Note: with 'no-cors', the response will be "opaque" 
-  // you won't be able to see if it succeeded in the code,
-  // but the data will reach the script.
-  console.log("Data sent to oracle!");
-})
-.catch(error => console.error('Error!', error.message));
-  }
+function submitForm() {
+  const form = document.querySelector('form'); // Or however you select your form
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
 
+  // THE FIX: Use 'text/plain' and 'no-cors'
+  fetch('https://script.google.com/macros/s/AKfycbwcNBSjV3u5Erxi-CjY9D3WxGH1IPm7X7r-L-owncQWMb535Nalnygk5uNcm-fvAxzF/exec', {
+    method: 'POST',
+    mode: 'no-cors', // <--- This stops the browser from asking for permission
+    headers: {
+      'Content-Type': 'text/plain', // <--- This tricks the browser into skipping the "Preflight" check
+    },
+    body: JSON.stringify(data),
+  })
+  .then(() => {
+    // Because of 'no-cors', we can't read the response, 
+    // but we can assume if it didn't 'catch', it worked.
+    alert("Reading launched! Check your email shortly.");
+    form.reset();
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+    alert("Something went wrong, but the data might have still sent.");
+  });
+}
   showSuccess();
 }
 </script>
