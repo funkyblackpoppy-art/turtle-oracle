@@ -96,9 +96,9 @@ body::after { content: none; }
 
 .page {
   position: relative; z-index: 1;
-  max-width: 1100px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 0 48px 80px;
+  padding: 0 40px 80px;
 }
 
 /* ── HEADER ── */
@@ -373,9 +373,14 @@ body::after { content: none; }
 .rinner:hover { border-color: var(--purple-mid); background: var(--purple-lo); }
 
 .rprice {
-  display: none;
+  display: block;
+  font-family: var(--cinzel);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--purple);
+  line-height: 1;
+  margin-bottom: 6px;
 }
-
 
 .rname {
   display: block;
@@ -399,8 +404,8 @@ body::after { content: none; }
 
 /* ── ABOUT BLOCK ── */
 .about-block {
-  background: var(--white);
-  border: 1px solid var(--border);
+  background: #f0ebe0; /* warm cream parchment, matches Canva frame */
+  border: 1px solid rgba(78,52,38,0.14);
   border-radius: var(--radius);
   padding: 40px 36px;
   margin-bottom: 32px;
@@ -441,7 +446,7 @@ body::after { content: none; }
 .about-body p {
   font-family: var(--playfair);
   font-size: 15px;
-  color: var(--ink3);
+  color: #3d2e22; /* warm dark brown — readable on parchment */
   line-height: 1.9;
   margin-bottom: 14px;
 }
@@ -461,7 +466,7 @@ body::after { content: none; }
 .about-origin p {
   font-family: var(--playfair);
   font-size: 15px;
-  color: var(--ink2);
+  color: #2e2218; /* slightly deeper warm brown for the origin paragraph */
   line-height: 1.95;
   margin-bottom: 16px;
 }
@@ -726,7 +731,11 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
   margin-top: 3px;
 }
 .ap {
-  display: none;
+  font-family: var(--cinzel);
+  font-size: 16px;
+  color: var(--teal);
+  white-space: nowrap;
+  font-weight: 500;
 }
 
 .total-row {
@@ -807,7 +816,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
 .sum-row:last-child { border-bottom: none; padding-top: 12px; }
 .sum-key { color: var(--ink3); font-family: var(--playfair); font-style: italic; }
 .sum-val { color: var(--ink); font-weight: 400; }
-.sum-total { display: none; }
+.sum-total { font-family: var(--cinzel); font-size: 22px; color: var(--purple); font-weight: 600; }
 
 /* ── NAV BUTTONS ── */
 .fnav {
@@ -1230,6 +1239,12 @@ background: linear-gradient(90deg, var(--purple-mid), var(--sage-hi), var(--purp
     </div>
   </div>
 
+  <!-- ORDER ID BANNER (shown when ?order= is in URL) -->
+  <div id="orderBanner" style="display:none;text-align:center;margin:0 auto 24px;padding:14px 20px;max-width:520px;background:#f0ebe0;border:1px solid rgba(78,52,38,0.18);border-radius:12px;font-family:var(--playfair);font-style:italic;font-size:14px;color:#3d2e22;">
+    <span style="font-family:var(--cinzel);font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--purple);display:block;margin-bottom:4px;">Order Received</span>
+    <span id="orderBannerId" style="font-family:var(--cinzel);font-style:normal;letter-spacing:.08em;color:#2e2218;"></span>
+  </div>
+
   <!-- PROGRESS -->
   <div class="prog" id="prog">
     <div class="pdot active" id="pd1"><div class="pcirc">1</div><div class="plabel">Reading</div></div>
@@ -1378,11 +1393,6 @@ background: linear-gradient(90deg, var(--purple-mid), var(--sage-hi), var(--purp
         <div class="fhint">Your reading is delivered here — please double-check this carefully.</div>
       </div>
       <div class="f full">
-        <label>Order ID <span class="opt">(from Shopify or Etsy)</span></label>
-        <input type="text" id="orderId" placeholder="e.g. #1042 or 123456789">
-        <div class="fhint">Find this in your order confirmation email. Leave blank if you don't have it handy.</div>
-      </div>
-      <div class="f full">
         <label>How Did You Find Us?</label>
         <select id="referral">
           <option value="" disabled selected>Select one</option>
@@ -1438,7 +1448,7 @@ background: linear-gradient(90deg, var(--purple-mid), var(--sage-hi), var(--purp
       </label>
     </div>
 
-    <div class="total-row" style="display:none;">
+    <div class="total-row">
       <span class="total-lbl">Estimated Total</span>
       <span class="total-amt" id="totalAmt">$0</span>
     </div>
@@ -1523,7 +1533,29 @@ background: linear-gradient(90deg, var(--purple-mid), var(--sage-hi), var(--purp
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcNBSjV3u5Erxi-CjY9D3WxGH1IPm7X7r-L-owncQWMb535Nalnygk5uNcm-fvAxzF/exec';
+// ─── Apps Script web app endpoint (writes to Orders sheet, sends emails)
+// REPLACE THIS with your own deployment URL after you deploy the Apps Script
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyucH91kF4iGrfFInJcmb-YXnHdyZlwHg0uL9t80o-sAK7MeqZKu-hwRAtZMtUu3c7w/exec';
+
+// ─── Read Order ID from URL (?order=SP-1042) — pre-filled by Make's email link
+const ORDER_ID_FROM_URL = (function() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return (params.get('order') || params.get('orderId') || params.get('id') || '').trim();
+  } catch (e) {
+    return '';
+  }
+})();
+
+// Show order banner immediately — script is at bottom of body so DOM is already ready
+if (ORDER_ID_FROM_URL) {
+  const banner = document.getElementById('orderBanner');
+  const idEl   = document.getElementById('orderBannerId');
+  if (banner && idEl) {
+    idEl.textContent = ORDER_ID_FROM_URL;
+    banner.style.display = 'block';
+  }
+}
 
 let cur = 1;
 let basePrice = 0;
@@ -1781,10 +1813,11 @@ function buildSummary() {
   });
 
   let html = `<div style="font-family:var(--cinzel);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">Your Order</div>`;
-  html += `<div class="sum-row"><span class="sum-key">${reading ? reading.value : ''}</span></div>`;
+  html += `<div class="sum-row"><span class="sum-key">${reading ? reading.value : ''}</span><span class="sum-val">$${basePrice}</span></div>`;
 
   addons.forEach(a => {
-    html += `<div class="sum-row"><span class="sum-key">${a}</span></div>`;
+    const el = document.querySelector(`.ac input[value="${a}"]`);
+    html += `<div class="sum-row"><span class="sum-key">${a}</span><span class="sum-val">+$${el ? el.dataset.price : 0}</span></div>`;
   });
 
   const sub0name = document.getElementById('sub0_name');
@@ -1796,11 +1829,6 @@ function buildSummary() {
   }
 
   html += `<div class="sum-row" style="border-bottom:none;padding-top:4px;"><span class="sum-key">Delivered to</span><span class="sum-val">${document.getElementById('email').value}</span></div>`;
-
-  const orderId = document.getElementById('orderId').value.trim();
-  if (orderId) {
-    html += `<div class="sum-row" style="border-bottom:none;padding-top:4px;"><span class="sum-key">Order ID</span><span class="sum-val">${orderId}</span></div>`;
-  }
 
   document.getElementById('summaryBox').innerHTML = html;
 } // 👈 THIS WAS MISSING
@@ -1838,7 +1866,8 @@ function collectSubjects() {
   });
 
   return out;
-}  
+}
+
 function showSuccess() {
   const prog = document.getElementById('prog');
   const s5 = document.getElementById('s5');
@@ -1851,46 +1880,120 @@ function showSuccess() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function submitForm() {
-  const submitBtn = document.getElementById('submitBtn');
-  const submitErr = document.getElementById('submitErr');
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = '<span class="spin"></span>Sending…';
-  submitErr.style.display = 'none';
+// ─────────────────────────────────────────────────────────────
+//  submitForm — wired to the Submit Order button (line ~1486)
+//  Gathers reading + add-ons + contact + subjects, sends to Apps Script
+// ─────────────────────────────────────────────────────────────
+async function submitForm() {
+  const btn = document.getElementById('submitBtn');
+  if (btn && btn.disabled) return;
 
-  const reading = document.querySelector('input[name="rt"]:checked');
-  const addons  = [...document.querySelectorAll('.ac input:checked')].map(cb => cb.value);
+  // ── Reading ─────────────────────────────────────────────
+  const readingRadio = document.querySelector('input[name="rt"]:checked');
+  if (!readingRadio) {
+    alert('Please select a reading type before submitting.');
+    return;
+  }
+  const reading = readingRadio.value;
+
+  // ── Add-ons + total ─────────────────────────────────────
+  const addonEls = [...document.querySelectorAll('.ac input:checked')];
+  const addonValues = addonEls.map(cb => cb.value);
   let total = basePrice;
-  document.querySelectorAll('.ac input:checked').forEach(cb => total += parseInt(cb.dataset.price));
+  addonEls.forEach(cb => { total += parseInt(cb.dataset.price, 10) || 0; });
 
+  // ── Contact ─────────────────────────────────────────────
+  const firstName = (document.getElementById('firstName')?.value || '').trim();
+  const lastName  = (document.getElementById('lastName')?.value || '').trim();
+  const email     = (document.getElementById('email')?.value || '').trim();
+  const referral  = (document.getElementById('referral')?.value || '').trim();
+
+  if (!firstName || !email) {
+    alert('Please fill in your first name and email before submitting.');
+    return;
+  }
+
+  // ── Subjects (animals/humans/questions) ─────────────────
+  const subjects = collectSubjects();
+
+  // ── Build payload (Make matches existing row by orderId) ─
   const payload = {
-    reading:   reading ? reading.value : '',
-    addons:    addons.join(', '),
-    total:     '$' + total,
-    orderId:   document.getElementById('orderId').value.trim(),
-    firstName: document.getElementById('firstName').value.trim(),
-    lastName:  document.getElementById('lastName').value.trim(),
-    email:     document.getElementById('email').value.trim(),
-    referral:  document.getElementById('referral').value,
-    subjects:  collectSubjects()
+    orderId:    ORDER_ID_FROM_URL,       // pre-filled from email link ?order=SP-1042
+    source:     ORDER_ID_FROM_URL ? 'shopify-make-link' : 'direct-intake',
+    submittedAt: new Date().toISOString(),
+    reading:    reading,
+    basePrice:  basePrice,
+    addons:     addonValues.length ? addonValues.join(', ') : 'None',
+    total:      total,
+    firstName:  firstName,
+    lastName:   lastName,
+    email:      email,
+    referral:   referral,
+    subjects:   subjects
   };
 
-  fetch(SCRIPT_URL, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload)
-  })
-  .then(r => r.ok ? r.json() : Promise.reject(r.status))
-  .then(() => { showSuccess(); })
-  .catch(err => {
-    console.error('Submit error:', err);
-    submitErr.textContent = 'Something went wrong — please try again or email us directly.';
-    submitErr.style.display = 'block';
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Order';
-    checkAgree();
+  // ── Disable button + show sending state ─────────────────
+  if (btn) {
+    btn.disabled = true;
+    btn.dataset.originalText = btn.textContent;
+    btn.textContent = 'Sending…';
+  }
+
+  console.log('Turtle Oracle intake submitting:', payload);
+
+  // ─── NATIVE FORM POST INTO HIDDEN IFRAME ────────────────────
+  // Why: browsers ALWAYS allow native form submissions cross-origin (this is
+  // how the entire web works). It's only AJAX (fetch/XHR) that triggers CORS.
+  // By creating a real <form> and submitting it into a hidden <iframe>, the
+  // request goes through normally, Apps Script receives it via doPost,
+  // writes the row, and the user never sees the response (which is fine —
+  // the row appears in the sheet within a few seconds).
+  // ────────────────────────────────────────────────────────────
+  await new Promise(function(resolve) {
+    // 1. Create hidden iframe to swallow the response
+    const iframe = document.createElement('iframe');
+    iframe.name = 'turtle_submit_target';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    // 2. Create real form pointing at Apps Script
+    const hiddenForm = document.createElement('form');
+    hiddenForm.action = SCRIPT_URL;
+    hiddenForm.method = 'POST';
+    hiddenForm.target = 'turtle_submit_target';
+    hiddenForm.enctype = 'application/x-www-form-urlencoded';
+    hiddenForm.style.display = 'none';
+
+    // 3. Add payload as a single hidden field — Apps Script reads e.parameter.payload
+    const payloadInput = document.createElement('input');
+    payloadInput.type = 'hidden';
+    payloadInput.name = 'payload';
+    payloadInput.value = JSON.stringify(payload);
+    hiddenForm.appendChild(payloadInput);
+
+    document.body.appendChild(hiddenForm);
+
+    // 4. When iframe loads (response received), resolve and clean up
+    let settled = false;
+    const finish = function() {
+      if (settled) return;
+      settled = true;
+      try { document.body.removeChild(hiddenForm); } catch (e) {}
+      try { document.body.removeChild(iframe); } catch (e) {}
+      resolve();
+    };
+    iframe.addEventListener('load', finish);
+    // Safety: resolve after 5 seconds even if onload never fires
+    setTimeout(finish, 5000);
+
+    // 5. Submit the form — fires the actual POST to Apps Script
+    hiddenForm.submit();
+    console.log('Turtle Oracle intake submitted via hidden form POST.');
   });
+
+  showSuccess();
 }
 </script>
 </body>
 </html>
+
