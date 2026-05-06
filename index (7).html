@@ -1957,23 +1957,23 @@ function submitForm() {
 
   // THE FIX: Use 'text/plain' and 'no-cors'
   fetch('https://script.google.com/macros/s/AKfycbwcNBSjV3u5Erxi-CjY9D3WxGH1IPm7X7r-L-owncQWMb535Nalnygk5uNcm-fvAxzF/exec', {
-    method: 'POST',
-    mode: 'no-cors', // <--- This stops the browser from asking for permission
-    headers: {
-      'Content-Type': 'text/plain', // <--- This tricks the browser into skipping the "Preflight" check
-    },
-    body: JSON.stringify(data),
-  })
-  .then(() => {
-    // Because of 'no-cors', we can't read the response, 
-    // but we can assume if it didn't 'catch', it worked.
-    alert("Reading launched! Check your email shortly.");
-    form.reset();
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-    alert("Something went wrong, but the data might have still sent.");
-  });
+// REPLACE your current fetch code with this:
+fetch('YOUR_URL_HERE', {
+  method: 'POST',
+  mode: 'no-cors', // <--- This prevents the browser from doing the CORS check
+  headers: {
+    'Content-Type': 'application/json' 
+  },
+  body: JSON.stringify(formData)
+})
+.then(() => {
+  // With no-cors, you can't read the response (the .json() will fail)
+  // But the script will have already run on the server!
+  alert("Oracle Reading triggered!"); 
+})
+.catch(error => {
+  console.error('Error:', error);
+});
 }
   showSuccess();
 }
